@@ -1,0 +1,66 @@
+#version 460
+
+in vec3 Position;
+in vec3 Normal;
+layout (location = 0) out vec4 FragColor;
+
+uniform struct LightInfo{
+    vec4 Position;
+    vec3 La;
+    vec3 L;
+    vec3 Direction;
+    float Exponent;
+    float Cutoff;
+}Light;
+
+uniform struct MaterialInfo {
+    vec3 Kd;
+    vec3 Ka;
+    vec3 Ks;
+    float Shininess;
+}Material;
+
+uniform struct FogInfo{
+    float MaxDist;
+    float MinDist;
+    vec3 Colour;
+}Fog;
+
+//const int levels = 5;
+//const float scaleFactor = 1.0/levels;
+
+vec3 Blinnphong( vec3 position, vec3 n) {
+    vec3 diffuse=vec3(0), spec=vec3(0);
+    vec3 ambient=Light.La*Material.Ka;
+
+    vec3 s=normalize(Light.Position.xyz-position);
+
+    float cosAng = dot(-s, normalize(Light.Direction));
+    float angle = acos(cosAng);
+    float spotScale;
+
+    if (angle >= 0.0 && angle < Light.Cutoff) {
+        spotScale = pow(cosAng, Light.Exponent);
+        float sDotN=max(dot(s,n),0.0);
+        diffuse=Material.Kd*sDotN;
+
+        if (sDotN > 0.00){
+            vec3 v = normalize(-position.xyz);
+            vec3 h = normalize(v + s);
+            spec = Material.Ks * pow(max(dot(h, n), 0.0), Material.Shininess);
+        }
+    }
+
+   
+    return ambient + spotScale * (diffuse+spec) * Light.L;
+}
+
+void main() {
+    float dist = abs(Position.z);
+    float fogFactor = (Fog.MaxDist-dist)/(Fog.MaxDist-Fog.MinDist);
+    fogFactor = clamp(fogFactor, 0.0, 1.0);
+    vec3 shaderColour = Blinnphong(Position, normalize(Normal));
+    vec3 colour = mix(Fog.Colour, shaderColour, fogFactor);
+
+    FragColor = vec4(colour, 1.0);
+}
