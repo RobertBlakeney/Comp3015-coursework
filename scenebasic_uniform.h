@@ -6,36 +6,37 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "helper/glslprogram.h"
-//#include "helper/scenerunner.h"
 #include "helper/glslprogram.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "helper/torus.h"
-#include "helper/teapot.h"
+
 #include "helper/plane.h"
 #include "helper/objmesh.h"
 #include "helper/texture.h"
+#include "helper/skybox.h"
 
-
+void mouse_callback(GLFWwindow* window, double xPos, double yPos);
 
 class SceneBasic_Uniform : public Scene
 {
 private:
     
-    GLSLProgram prog;
-    GLuint crabTex = Texture::loadTexture("media/bark.jpg");
-
-    //Torus torus;
-    //Teapot teapot;
+    GLSLProgram prog, skyProg;
+    GLuint tex = Texture::loadTexture("media/peng.png");
+    GLuint dirtTex = Texture::loadTexture("media/dirt.png");
+    GLuint grey = Texture::loadTexture("media/grey.jpg");
+    GLuint cubeTex = Texture::loadHdrCubeMap("media/sky/sky");
+    SkyBox sky;
     Plane plane;
-    float tPrev;
-    float angle;
     std::unique_ptr<ObjMesh> mesh;
     
+    float tPrev;
+    float angle;
+
     void compile();
-    void SetMatrices();
+    void SetMatrices(GLSLProgram &p);
 
 public:
     SceneBasic_Uniform();

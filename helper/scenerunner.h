@@ -47,6 +47,8 @@ public:
             glfwTerminate();
             exit( EXIT_FAILURE );
         }
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        
         glfwMakeContextCurrent(window);
 
         // Get framebuffer size
@@ -131,3 +133,6 @@ private:
         }
     }
 };
+
+
+

@@ -3,7 +3,8 @@
 in vec3 Position;
 in vec3 Normal;
 in vec2 TexCoord;
-layout (binding=0) uniform sampler2D Tex1;
+layout (binding = 0) uniform sampler2D Tex1;
+layout (binding = 1) uniform sampler2D Tex2;
 layout (location = 0) out vec4 FragColor;
 
 uniform struct LightInfo{
@@ -36,7 +37,10 @@ uniform struct FogInfo{
 
 vec3 Blinnphong( vec3 position, vec3 n) {
     vec3 diffuse=vec3(0), spec=vec3(0);
-    vec3 texColour = texture(Tex1, TexCoord).rgb;
+
+    vec4 pengTexColour = texture(Tex1, TexCoord);
+    vec4 dirtTexColour = texture(Tex2, TexCoord);
+    vec3 texColour = mix(pengTexColour.rgb, dirtTexColour.rgb, dirtTexColour.a);
     vec3 ambient = Light.La * texColour;
 
     vec3 s=normalize(Light.Position.xyz-position);
