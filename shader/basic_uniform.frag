@@ -2,6 +2,8 @@
 
 in vec3 Position;
 in vec3 Normal;
+in vec2 TexCoord;
+layout (binding=0) uniform sampler2D Tex1;
 layout (location = 0) out vec4 FragColor;
 
 uniform struct LightInfo{
@@ -20,6 +22,9 @@ uniform struct MaterialInfo {
     float Shininess;
 }Material;
 
+const int levels = 3;
+const float scaleFactor = 1.0 / levels;
+
 uniform struct FogInfo{
     float MaxDist;
     float MinDist;
@@ -31,7 +36,8 @@ uniform struct FogInfo{
 
 vec3 Blinnphong( vec3 position, vec3 n) {
     vec3 diffuse=vec3(0), spec=vec3(0);
-    vec3 ambient=Light.La*Material.Ka;
+    vec3 texColour = texture(Tex1, TexCoord).rgb;
+    vec3 ambient = Light.La * texColour;
 
     vec3 s=normalize(Light.Position.xyz-position);
 
@@ -42,7 +48,7 @@ vec3 Blinnphong( vec3 position, vec3 n) {
     if (angle >= 0.0 && angle < Light.Cutoff) {
         spotScale = pow(cosAng, Light.Exponent);
         float sDotN=max(dot(s,n),0.0);
-        diffuse=Material.Kd*sDotN;
+        diffuse = texColour * floor(sDotN * levels) * scaleFactor;
 
         if (sDotN > 0.00){
             vec3 v = normalize(-position.xyz);
@@ -55,12 +61,14 @@ vec3 Blinnphong( vec3 position, vec3 n) {
     return ambient + spotScale * (diffuse+spec) * Light.L;
 }
 
+
 void main() {
     float dist = abs(Position.z);
     float fogFactor = (Fog.MaxDist-dist)/(Fog.MaxDist-Fog.MinDist);
     fogFactor = clamp(fogFactor, 0.0, 1.0);
     vec3 shaderColour = Blinnphong(Position, normalize(Normal));
     vec3 colour = mix(Fog.Colour, shaderColour, fogFactor);
+
 
     FragColor = vec4(colour, 1.0);
 }

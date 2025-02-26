@@ -16,6 +16,7 @@
 #include "helper/teapot.h"
 #include "helper/plane.h"
 #include "helper/objmesh.h"
+#include "helper/texture.h"
 
 
 
@@ -24,6 +25,7 @@ class SceneBasic_Uniform : public Scene
 private:
     
     GLSLProgram prog;
+    GLuint crabTex = Texture::loadTexture("media/bark.jpg");
 
     //Torus torus;
     //Teapot teapot;
