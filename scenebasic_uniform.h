@@ -27,9 +27,14 @@ private:
     GLuint tex = Texture::loadTexture("media/peng.png");
     GLuint dirtTex = Texture::loadTexture("media/dirt.png");
     GLuint grey = Texture::loadTexture("media/grey.jpg");
+
     GLuint cubeTex = Texture::loadHdrCubeMap("media/sky/sky");
+    
+    GLuint fsQuad, renderTex, fboHandle;
+
     SkyBox sky;
     Plane plane;
+    
     std::unique_ptr<ObjMesh> mesh;
     
     float tPrev;
@@ -37,6 +42,10 @@ private:
 
     void compile();
     void SetMatrices(GLSLProgram &p);
+
+    void setupFBO();
+    void pass1();
+    void pass2();
 
 public:
     SceneBasic_Uniform();
