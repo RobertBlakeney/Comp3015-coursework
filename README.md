@@ -18,5 +18,5 @@ media folder is for obj and texture files needed.
 
 ## Demo of scene
 
-[video][https://www.youtube.com/watch?v=KauvRVzMQLs]
+[video](https://www.youtube.com/watch?v=KauvRVzMQLs)
 
