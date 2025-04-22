@@ -1,4 +1,4 @@
-# Cw1 OpenGL Scene
+# OpenGL Scene
 
 ## Tools used
 
