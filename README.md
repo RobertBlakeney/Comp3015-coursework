@@ -26,6 +26,12 @@
 
 ## Code Explanation
 
+### Use of program
+
+The program can be run either through visual studio or by using the an exe from compiling the software. Using thhe exe will required the contents of the media folder and will also need opengl dependencies used in C:/users/pulbic/opengl. These are glad, glfw, glm.
+
+Controlling the scene is possible with the use of the wasd keys and the mouse. This will control the camera. To move the penguin the up and sown arrow keys can be used for forward and backwards with left and right for rotation of the model. Pressing E when near a model fish will allow interaction with it.
+
 ### cw1
 
 The code is ran from a main.cpp file with scenebasic_uniform.cpp having the enviroment to execute the code. This is split into a couple functions. init for setting up the scene, comile to compile and link shaders, update for any realtime updates such as positional or rotation data and a render loop for seting models on the scene and rendering them with textures. 
