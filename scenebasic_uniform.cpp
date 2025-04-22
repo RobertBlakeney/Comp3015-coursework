@@ -293,7 +293,6 @@ void SceneBasic_Uniform::pass1() {
 	prog.setUniform("Material.Ks", vec3(0.8f, 0.8f, 0.8f));
 	prog.setUniform("Material.Ka", vec3(0.2f, 0.5f, 0.9f));
 	prog.setUniform("Material.Shininess", 180.0f);
-	prog.setUniform("Time", Time);
 
 	model = mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f));
