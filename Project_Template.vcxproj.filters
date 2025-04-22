@@ -69,6 +69,15 @@
     <ClCompile Include="helper\stb\stb_image.cpp">
       <Filter>helper\stb</Filter>
     </ClCompile>
+    <ClCompile Include="helper\grid.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\frustum.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\noisetex.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -81,6 +90,18 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="shader\skybox.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader\particle.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader\particle.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader\flat.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader\flat.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>
@@ -141,6 +162,21 @@
     </ClInclude>
     <ClInclude Include="helper\stb\stb_image_write.h">
       <Filter>helper\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\grid.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\particleutils.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\random.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\frustum.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\noisetex.h">
+      <Filter>helper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

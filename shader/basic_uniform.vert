@@ -19,9 +19,11 @@ void getCamSpaceValues(out vec3 norm, out vec3 position) {
 
 void main()
 {
+    vec4 pos = vec4(VertexPosition, 1.0);
+    
     TexCoord = VertexTexCoord;
     Normal = normalize(NormalMatrix*VertexNormal);
     Position = (ModelViewMatrix*vec4(VertexPosition,1.0)).xyz;
 
-    gl_Position = MVP*vec4(VertexPosition,1.0);
+    gl_Position = MVP *  pos;
 }
