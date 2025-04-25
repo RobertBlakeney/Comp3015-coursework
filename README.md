@@ -61,5 +61,5 @@ Alpha discard and fog - These features are additions missed from cw1. They both 
 
 ## Demo of scene - cw2
 
-[video](https://www.youtube.com/watch?v=p3HnVZ34Vs8)
+[video](https://youtu.be/n6F6IrsJ8BY)
 
