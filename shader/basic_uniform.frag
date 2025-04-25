@@ -6,8 +6,10 @@ in vec2 TexCoord;
 
 
 layout (binding = 0) uniform sampler2D Tex1;
-layout (binding = 1) uniform sampler2D Tex2;
+//layout (binding = 1) uniform sampler2D Tex2;
+layout (binding = 1) uniform sampler2D AlphaTex;
 layout (binding = 2) uniform sampler2D Texture2;
+
 
 layout (location = 0) out vec4 FragColour;
 
@@ -33,19 +35,22 @@ uniform struct MaterialInfo {
 const int levels = 3;
 const float scaleFactor = 1.0 / levels;
 
-//uniform struct FogInfo{
-//    float MaxDist;
-//    float MinDist;
-//    vec3 Colour;
-//}Fog;
+uniform struct FogInfo{
+    float MaxDist;
+    float MinDist;
+    vec3 Colour;
+}Fog;
 
 
 vec3 Blinnphong( vec3 position, vec3 n) {
     vec3 diffuse=vec3(0), spec=vec3(0);
 
-    vec4 pengTexColour = texture(Tex1, TexCoord);
-    vec4 dirtTexColour = texture(Tex2, TexCoord);
-    vec3 texColour = mix(pengTexColour.rgb, dirtTexColour.rgb, dirtTexColour.a);
+    vec3 texColour = texture(Tex1, TexCoord).rgb;
+    //vec4 dirtTexColour = texture(Tex2, TexCoord);
+    
+    //vec3 texColour = mix(pengTexColour.rgb, dirtTexColour.rgb, dirtTexColour.a);
+    
+    
     vec3 ambient = Light.La * texColour;
 
     vec3 s=normalize(Light.Position.xyz-position);
@@ -70,10 +75,6 @@ vec3 Blinnphong( vec3 position, vec3 n) {
     return ambient + spotScale * (diffuse+spec) * Light.L;
 }
 
-
-vec4 pass1() {
-    return vec4(Blinnphong(Position, normalize(Normal)), 1.0);
-}
 
 vec4 pass2() {
     ivec2 pix = ivec2(gl_FragCoord.xy);
@@ -110,14 +111,32 @@ vec4 pass3() {
 
 
 void main() {
-    if (pass == 1) FragColour = pass1();
+    if (pass == 1) {
+        
+        vec4 alphaMap = texture(AlphaTex, TexCoord);
+        vec3 shaderColour;
+
+        if (alphaMap.a < 0.015f) {
+            discard;
+        }
+
+        else {
+            if (gl_FrontFacing) {
+                shaderColour = vec3(Blinnphong(Position, normalize(Normal)));
+            }
+            else {
+                shaderColour = vec3(Blinnphong(Position, normalize(-Normal)));
+            }
+        }
+
+        float dist = abs(Position.z);
+        float fogFactor = (Fog.MaxDist-dist)/(Fog.MaxDist-Fog.MinDist);
+        fogFactor = clamp(fogFactor, 0.0, 1.0);
+        vec3 colour = mix(Fog.Colour, shaderColour, fogFactor);
+
+        FragColour = vec4(colour, 1);
+    }
+
     else if (pass == 2) FragColour = pass2();
     else if (pass == 3) FragColour = pass3();
-    
-
-    //float dist = abs(Position.z);
-    //float fogFactor = (Fog.MaxDist-dist)/(Fog.MaxDist-Fog.MinDist);
-    //fogFactor = clamp(fogFactor, 0.0, 1.0);
-    //vec3 shaderColour = Blinnphong(Position, normalize(Normal));
-    //vec3 colour = mix(Fog.Colour, FragColour, fogFactor);
 }

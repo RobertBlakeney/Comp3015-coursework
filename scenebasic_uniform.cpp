@@ -103,9 +103,10 @@ void SceneBasic_Uniform::initScene()
 	prog.setUniform("Light.La", vec3(0.5f));
 	prog.setUniform("Light.Exponent", vec3(50.0f));
 	prog.setUniform("Light.Cutoff", glm::radians(15.0f));
-	//prog.setUniform("Fog.MaxDist", 15.0f);
-	//prog.setUniform("Fog.MinDist", 1.0f);
-	//prog.setUniform("Fog.Colour", vec3(0.5f, 0.5f, 0.5f));
+	
+	prog.setUniform("Fog.MaxDist", 15.0f);
+	prog.setUniform("Fog.MinDist", 1.0f);
+	prog.setUniform("Fog.Colour", vec3(0.5f, 0.5f, 0.5f));
 
 	float weights[5], sum, sigma2 = 10.0f;
 
@@ -285,9 +286,9 @@ void SceneBasic_Uniform::pass1() {
 	fish->render();
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, grey);
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, grey);
 
 	prog.setUniform("Material.Kd", vec3(0.2f, 0.5f, 0.9f));
 	prog.setUniform("Material.Ks", vec3(0.8f, 0.8f, 0.8f));
